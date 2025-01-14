@@ -1,0 +1,258 @@
+debian 11:
+apt update  
+apt upgrade
+- 安装Nginx
+apt install nginx
+
+安装防火墙工具（如果未安装）
+sudo apt update
+sudo apt install iptables
+放行 HTTP（80 端口）和 HTTPS（443 端口）
+sudo iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+sudo iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+放行自定义端口（例如 9000）
+sudo iptables -A INPUT -p tcp --dport 9000 -j ACCEPT
+保存规则
+iptables 的规则默认是临时的，重启后会失效。为了永久保存规则，可以安装 iptables-persistent：
+sudo apt install iptables-persistent
+安装过程中会提示是否保存当前规则，选择“是”即可。如果需要手动保存规则，可以运行：
+sudo netfilter-persistent save
+
+- 安装Mariadb
+apt install mariadb-server
+- 配置Mariadb
+mysql_secure_installation
+根据提示操作即可。
+- 创建数据库
+mariadb
+之后会显示
+MariaDB [(none)]> 
+接下来输入命令 
+CREATE DATABASE dujiaoka ;
+GRANT ALL ON dujiaoka.* TO 'root'@'localhost' IDENTIFIED BY '数据库密码' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EXIT
+- 安装PHP7.4
+apt install php php-fpm php-mysql php-gd php-zip php-opcache php-curl php-mbstring php-intl php-dom php-bcmath php-redis php-fileinfo
+- 安装redis
+apt install redis
+
+- 启用函数
+`nano /etc/php/7.4/fpm/php.ini`,`ctrl+w` 搜索 `putenv`，`proc_open`，`pcntl_signal`，`pcntl_alarm` 在`disable_functions` 一行 有就去掉。
+之后
+/etc/init.d/php7.4-fpm reload
+
+检查扩展
+php -m | grep -E 'fileinfo|redis|opcache'
+
+sudo systemctl restart php7.4-fpm.service
+sudo systemctl restart nginx
+
+sudo nano /etc/php/7.4/fpm/pool.d/www.conf
+[www]
+user = www-data
+group = www-data
+listen = /run/php/php7.4-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+
+测试：
+echo "<?php phpinfo(); ?>" | sudo tee /home/s.xxxxx.xyz/info.php
+
+wget -c https://github.com/JeleonX/virtual_sell/releases/download/2.0.6/dujiaoka.2.0.6.vendor.tar
+tar -xvf dujiaoka.2.0.6.vendor.tar
+
+cd /home/dujiaoka
+
+sudo chown -R www-data:www-data *
+sudo chmod 755 -R *
+sudo chmod 777 .env
+
+访问域名安装
+
+安装完修改.env
+sudo nano /home/dujiaoka/.env
+APP_ENV=production
+APP_DEBUG=false
+ADMIN_HTTPS=true
+
+配置 Supervisor
+先安装
+apt install supervisor
+创建配置文件
+nano /etc/supervisor/conf.d/dujiaoka.conf
+写入配置文件：
+[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /home/dujiaoka/artisan queue:work
+autostart=true
+autorestart=true
+user=www-data
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/home/worker.log
+启动
+supervisorctl reread
+supervisorctl update
+supervisorctl start laravel-worker:*
+验证守护进程状态
+sudo supervisorctl status
+输出示例：
+laravel-worker:laravel-worker_00   RUNNING   pid 12345, uptime 0:00:10
+是否已配置为系统服务？
+systemctl status supervisor
+
+
+附带配置代码：
+
+守护进程：
+
+[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /home/dujiaoka/artisan queue:work
+autostart=true
+autorestart=true
+user=www-data
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/home/worker.log
+
+
+/etc/php/7.4/fpm/pool.d/www.conf配置：
+
+[www]
+user = www-data
+group = www-data
+listen = /run/php/php7.4-fpm.sock
+listen.owner = www-data
+listen.group = www-data
+pm = dynamic
+pm.max_children = 5
+pm.start_servers = 2
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+
+
+nginx配置：
+
+     server {
+         listen       443 ssl http2;
+         listen       [::]:443 ssl http2;
+         server_name  s.xxxxx.xyz;
+         root         /home/dujiaoka/public;
+         index index.html index.htm index.php default.html default.htm default.php;
+         ssl_certificate "/etc/ssl/xxxxx.xyz.pem";
+         ssl_certificate_key "/etc/ssl/xxxxx.xyz.key";
+         ssl_session_cache shared:SSL:1m;
+         ssl_session_timeout  10m;
+         ssl_ciphers HIGH:!aNULL:!MD5;
+         ssl_prefer_server_ciphers on;
+ 
+         location ~ \.php$ {
+            include snippets/fastcgi-php.conf;
+            fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+         }
+
+
+         location / {
+               try_files $uri $uri/ /index.php$is_args$query_string; 
+         }
+
+
+         error_page 404 /404.html;
+             location = /40x.html {
+         }
+ 
+         error_page 500 502 503 504 /50x.html;
+             location = /50x.html {
+         }
+     }
+---------------------------------------------------------------------------------------------------
+宝塔安装独角数卡2.0：
+Debian 安装脚本
+稳定版9.0.0
+wget -O install.sh https://download.bt.cn/install/install_lts.sh && bash install.sh ed8484bec
+通用安装脚本：
+if [ -f /usr/bin/curl ];then curl -sSO https://download.bt.cn/install/install_panel.sh;else wget -O install_panel.sh https://download.bt.cn/install/install_panel.sh;fi;bash install_panel.sh ed8484bec
+
+SSH端口转发：
+ssh -L 28852:127.0.0.1:28852 root@xx.xx.xx.xx -p 22
+
+https://localhost:28852/xxxxxx
+
+MySQL 5.6 
+Nginx
+Redis
+PHP7.4
+supervisor
+phpmyadmin ---
+
+解除禁用函数（如果有的话）
+putenv，proc_open，pcntl_signal，pcntl_alarm
+
+PHP安装以下三个扩展：
+fileinfo、redis、opcache(可选安装，性能加强)
+
+一定要下载带build字样的安装包，才有依赖！
+2.0.4：
+wget -c https://github.com/assimon/dujiaoka/releases/download/2.0.4/2.0.4-Antibody.tar.gz
+tar -zxvf 2.0.4-Antibody.tar.gz
+
+2.0.6：
+wget -c https://github.com/assimon/dujiaoka/releases/download/2.0.6/2.0.6-antibody.tar.gz
+tar -zxvf 2.0.6-antibody.tar.gz
+
+安装最新版：
+git clone https://github.com/assimon/dujiaoka.git
+然后把2.0.6的vendor复制进去
+
+或者：
+wget -c https://github.com/JeleonX/virtual_sell/releases/download/2.0.6/dujiaoka.2.0.6.vendor.tar
+tar -xvf dujiaoka.2.0.6.vendor.tar
+
+先移除防跨站限制（如果有的话）
+假设你的网站根目录是：/home/wwwroot/dujiaoka
+cd /home/wwwroot/dujiaoka
+chattr -i .user.ini
+rm -rf .user.ini
+安装后再设置防跨站
+.user.ini   权限/所有者 644/root 内容：
+open_basedir=/www/wwwroot/dujiaoka/:/tmp/
+
+chown www -R *
+chmod 755 -R *
+chmod 777 .env
+
+
+伪静态laravel5，也可以放置laravel5.conf:
+location / {
+    try_files $uri $uri/ /index.php$is_args$query_string; 
+}
+
+默认后台用户密码：admin admin
+
+Supervisor设置:
+命令参考：
+/www/server/php/74/bin/php /www/wwwroot/dujiaoka/artisan queue:work
+
+名称：随意填写
+启动用户：选择www
+运行目录：选择程序根目录
+启动命令：/www/server/php/你的php版本/bin/php /www/wwwroot/你的网站根目录/artisan queue:work
+
+
+
+lnmp一键安装：----------------------------------------------------------------------------------
+screen -S lnmp
+wget https://soft.lnmp.com/lnmp/lnmp2.1.tar.gz -cO lnmp2.1.tar.gz
+tar zxf lnmp2.1.tar.gz
+rm -rf lnmp2.1.tar.gz
+cd lnmp2.1
+./install.sh lnmp
