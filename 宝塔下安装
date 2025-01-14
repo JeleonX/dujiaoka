@@ -33,7 +33,7 @@ git clone https://github.com/assimon/dujiaoka.git
 然后把2.0.6的vendor复制进去
 
 或者：
-https://github.com/JeleonX/virtual_sell/releases/download/2.0.6/dujiaoka.2.0.6.vendor.tar
+wget -c https://github.com/JeleonX/virtual_sell/releases/download/2.0.6/dujiaoka.2.0.6.vendor.tar
 tar -xvf dujiaoka.2.0.6.vendor.tar
 
 先移除防跨站限制（如果有的话）
