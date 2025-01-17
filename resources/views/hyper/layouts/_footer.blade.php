@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-6">
             	<div class="footer-links">
-                    Powered by @Dujiaoshuka
+                    Powered by <a href="https://github.com/assimon/dujiaoka" target="_blank">@Dujiaoka</a>
                 </div>
             </div>
             <div class="col-md-6">
