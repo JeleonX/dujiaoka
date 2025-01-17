@@ -1,0 +1,40 @@
+<?php
+
+return [
+    'labels' => [
+        'Order' => 'Order',
+        'order' => 'Order',
+    ],
+    'fields' => [
+        'actual_price' => 'Actual Payment Price',
+        'buy_amount' => 'Purchase Quantity',
+        'buy_ip' => 'Buyer IP Address',
+        'coupon_discount_price' => 'Coupon Discount Price',
+        'coupon_id' => 'Coupon Code',
+        'email' => 'Order Email',
+        'goods_id' => 'Product ID',
+        'goods_price' => 'Product Unit Price',
+        'info' => 'Order Details',
+        'order_id' => 'Order ID',
+        'order_sn' => 'Order Number',
+        'pay_id' => 'Payment Channel',
+        'status' => 'Order Status',
+        'search_pwd' => 'Search Password',
+        'title' => 'Order Name',
+        'total_price' => 'Total Order Price',
+        'trade_no' => 'Third-Party Payment Order Number',
+        'type' => 'Order Type',
+        'wholesale_discount_price' => 'Wholesale Discount',
+        'status_wait_pay' => 'Pending Payment',
+        'status_pending' => 'Pending',
+        'status_processing' => 'Processing',
+        'status_completed' => 'Completed',
+        'status_failure' => 'Failed',
+        'status_abnormal' => 'Abnormal',
+        'status_expired' => 'Expired',
+        'order_created' => 'Order Creation Time',
+        'order_detail' => 'Order Details',
+    ],
+    'options' => [
+    ],
+];
