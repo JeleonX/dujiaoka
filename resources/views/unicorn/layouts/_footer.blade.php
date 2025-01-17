@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-12 text-center">
             <div class="author">
-                Powered by @Dujiaoshuka
+                Powered by <a href="https://github.com/assimon/dujiaoka" target="_blank">@Dujiaoka</a>
             </div>
             <div class="custom">
                 {!! dujiaoka_config_get('footer') !!}
