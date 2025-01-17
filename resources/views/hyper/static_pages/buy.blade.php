@@ -28,7 +28,7 @@
                         <span class="badge badge-outline-danger">{{ __('hyper.buy_charge') }}</span>
                     @endif
                     {{-- 库存 --}}
-                    <span class="badge badge-outline-primary">{{ __('hyper.buy_in_stock') }}({{ $in_stock }})</span>
+                    {{-- <span class="badge badge-outline-primary">{{ __('hyper.buy_in_stock') }}({{ $in_stock }})</span> --}}
                     @if($buy_limit_num > 0)
                         <span class="badge badge-outline-dark"> {{__('hyper.buy_purchase_restrictions')}}({{ $buy_limit_num }})</span>
                     @endif
