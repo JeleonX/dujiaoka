@@ -7,7 +7,7 @@
         </a>
         <a class="btn btn-outline-primary" href="{{ url('order-search') }}">
             <i class="noti-icon uil-file-search-alt search-icon"></i>
-            查询订单
+            {{ __('dujiaoka.order_search') }}
         </a>
     </div>
 </div>
