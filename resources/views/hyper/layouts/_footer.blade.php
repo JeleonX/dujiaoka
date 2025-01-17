@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-6">
             	<div class="footer-links">
-                    Powered by @独角数卡
+                    Powered by @Dujiaoshuka
                 </div>
             </div>
             <div class="col-md-6">
