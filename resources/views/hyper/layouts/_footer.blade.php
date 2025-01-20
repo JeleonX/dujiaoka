@@ -2,7 +2,7 @@
 <footer class="hyper-footer">
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-12 text-center">
             	<div class="footer-links">
                     Powered by <a href="https://github.com/assimon/dujiaoka" target="_blank">@Dujiaoka</a>
                 </div>
