@@ -22,7 +22,7 @@ class HomeController extends Controller
             ->description(admin_trans('dujiaoka.dashboard_description'))
             ->body(function (Row $row) {
                 $row->column(6, function (Column $column) {
-                    $column->row(self::title());
+                //    $column->row(self::title());
                     $column->row(new DashBoard());
                 });
 
