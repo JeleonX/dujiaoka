@@ -14,10 +14,10 @@
             <div class="card-body">
                 <h5 class="card-title text-primary text-center">{{ __('hyper.qrpay_order_expiration_date') }} {{ dujiaoka_config_get('order_expire_time', 5) }} {{ __('hyper.qrpay_expiration_date') }}</h5>
                 <div class="text-center">
-                    <img src="data:image/png;base64,{!! base64_encode(QrCode::format('png')->size(200)->generate($qr_code)) !!}">
+                    <img src="data:image/png;base64,{!! base64_encode(QrCode::format('png')->size(258)->generate($qr_code)) !!}">
                 </div>
                 {{-- 订单金额 --}}
-                <p class="card-text text-center">{{ __('hyper.qrpay_actual_payment') }}: {{ $actual_price }}</p>
+                <p class="card-text text-center">{{ __('hyper.qrpay_actual_payment') }}: ¥{{ $actual_price }}</p>
                 @if(Agent::isMobile() && isset($jump_payuri))
                     <p class="errpanl" style="text-align: center"><a href="{{ $jump_payuri }}" class="">{{ __('hyper.qrpay_open_app_to_pay') }}</a></p>
                 @endif
