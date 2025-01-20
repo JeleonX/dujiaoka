@@ -38,6 +38,7 @@ class WepayController extends PayController
                         $result['payname'] =$this->payGateway->pay_name;
                         $result['actual_price'] = (float)$this->order->actual_price;
                         $result['orderid'] = $this->order->order_sn;
+						$result['paykind'] = '微信';
                         return $this->render('static_pages/qrpay', $result, __('dujiaoka.scan_qrcode_to_pay'));
                     } catch (\Exception $e) {
                         throw new RuleValidationException(__('dujiaoka.prompt.abnormal_payment_channel') . $e->getMessage());
