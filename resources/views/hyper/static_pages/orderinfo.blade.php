@@ -22,6 +22,7 @@
     <div class="card card-body">
         <div class="orderinfo-card-grid">
             <div class="orderinfo-info">
+				{{-- <div class="mb-1"><span style="color: red;">如果已付款，订单状态未支付，请刷新页面</span></div> --}}
                 {{-- 订单名称 --}}
                 <div class="mb-1"><label>{{ __('hyper.orderinfo_order_title') }}：</label><span>{{ $order['title'] }}</span></div>
                 {{-- 下单数量 --}}
