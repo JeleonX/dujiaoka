@@ -12,6 +12,7 @@ $(function() {
 		zfbf2f     : alipaySvg,
 		aliweb     : alipaySvg,
 		aliwap     : alipaySvg,
+		alipayscan     : alipaySvg,
 		mqq        : qqSvg,
 		mzfb       : alipaySvg,
 		mwx        : weChatSvg,
