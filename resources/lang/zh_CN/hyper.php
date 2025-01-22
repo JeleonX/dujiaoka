@@ -37,7 +37,7 @@ return [
     'buy_each'                  => '元/件',
     'buy_price'                 => '价格',
     'buy_email'                 => '电子邮箱',
-    'buy_input_account'         => '接收商品信息或通知',
+    'buy_input_account'         => '重要！用于查询订单、接收商品信息或通知',
     'buy_purchase_quantity'     => '购买数量',
     'buy_in_stock'              => '库存',
     'buy_purchase_restrictions' => '限购',
