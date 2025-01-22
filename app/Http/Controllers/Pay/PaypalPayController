@@ -83,6 +83,7 @@ class PaypalPayController extends PayController
         <input type="hidden" name="business" value="{$businessEmail}">
         <input type="hidden" name="item_name" value="{$productName}">
         <input type="hidden" name="item_number" value="{$orderSN}">
+		<input type="hidden" name="custom" value="{$this->order->actual_price}">
         <input type="hidden" name="currency_code" value="USD">
         <input type="hidden" name="amount" value="{$amount}">
         <input type="hidden" name="no_note" value="1">
@@ -112,17 +113,8 @@ public function returnUrl(Request $request)
     if (!$order) {
         return $this->err('订单不存在');
     }
-
-    // 检查支付状态
-    if ($paymentStatus === 'Completed') {
-        // 支付成功
-        $this->orderProcessService->completedOrder($orderSN, $order->actual_price, $request->input('txn_id'));
-        Log::info("PayPal 支付成功", ['订单号' => $orderSN, '支付状态' => $paymentStatus]);
-    } else {
-        // 支付失败
-        Log::error("PayPal 支付失败", ['订单号' => $orderSN, '支付状态' => $paymentStatus]);
-    }
-
+	
+	sleep(5); 
     return redirect(url('detail-order-sn', ['orderSN' => $orderSN]));
 }
 
@@ -153,7 +145,9 @@ public function notifyUrl(Request $request)
 
         if ($paymentStatus === 'Completed') {
             // 支付成功
-            $this->orderProcessService->completedOrder($orderSN, $postData['mc_gross'], $txnId);
+            $amountCNY = $postData['custom'];
+			//修改IPN处理逻辑： 从 custom 字段获取原始人民币金额
+			$this->orderProcessService->completedOrder($orderSN, $amountCNY, $txnId);
             Log::info("PayPal 异步通知支付成功", ['订单号' => $orderSN, '交易号' => $txnId]);
         }
     } else {
