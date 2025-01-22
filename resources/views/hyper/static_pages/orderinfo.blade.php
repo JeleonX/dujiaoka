@@ -60,7 +60,7 @@
                             @break
                             @case(\App\Models\Order::STATUS_WAIT_PAY)
                                 {{-- 待支付 --}}
-                                {{ __('hyper.orderinfo_status_wait_pay') }}
+                                 {{ __('hyper.orderinfo_status_wait_pay') }} <a href="{{ url('/bill', ['orderSN' => $order['order_sn']]) }}">去支付</a>
                             @break
                             @case(\App\Models\Order::STATUS_PENDING)
                                 {{-- 待处理 --}}
