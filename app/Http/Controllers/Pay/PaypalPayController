@@ -53,7 +53,7 @@ class PaypalPayController extends PayController
     private function convertToUSD(float $amountCNY): float
     {
         // 使用固定汇率（例如 0.15）或调用汇率 API
-        $rate = 0.15; // 默认汇率
+        $rate = 0.137; // 默认汇率
         return round($amountCNY * $rate, 2);
     }
 
