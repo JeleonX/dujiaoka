@@ -66,6 +66,7 @@ Telegram: [https://t.me/dujiaoka](https://t.me/dujiaoka)
 ![首页.png](https://i.loli.net/2021/01/06/nHCSV5PdJIzT6Gy.png)
 
 ## 安装篇
+- [Debian 11 手动安装]((https://github.com/JeleonX/dujiaoka/blob/master/debian_manual.md))
 - [Linux环境安装](https://github.com/assimon/dujiaoka/wiki/linux_install)
 - [Docker安装](https://github.com/assimon/dujiaoka/wiki/docker_install)
 - [2.x版本宝塔安装教程](https://github.com/assimon/dujiaoka/wiki/2.x_bt_install)
