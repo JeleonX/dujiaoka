@@ -146,3 +146,41 @@ class PaypalPayController extends PayController
     }
 
 }
+
+
+/**
+ *-------------------------------------------自动汇率示例：
+ */
+function getUsd($cny)
+{
+    try {
+        // 使用备用 API 获取汇率数据
+        $url = "https://api.exchangerate-api.com/v4/latest/USD";
+        $response = CurlRequest::get($url);
+
+        // 检查响应是否为空
+        if (empty($response)) {
+            throw new \Exception('API 响应为空');
+        }
+
+        // 解析 JSON 数据
+        $data = json_decode($response, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('JSON 解析失败: ' . json_last_error_msg());
+        }
+
+        // 检查汇率数据是否存在
+        if (!isset($data['rates']['CNY'])) {
+            throw new \Exception('汇率数据不存在');
+        }
+
+        // 计算美元对人民币的汇率
+        $rate = 1 / $data['rates']['CNY'];
+        return $cny * $rate;
+    } catch (\Exception $e) {
+        // 记录错误日志
+        // error_log('获取汇率失败: ' . $e->getMessage());
+        // 返回默认汇率（例如 0.15）或抛出异常
+        return $cny * 0.137;
+    }
+}
