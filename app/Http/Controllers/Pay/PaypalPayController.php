@@ -6,7 +6,7 @@ use App\Exceptions\RuleValidationException;
 use App\Http\Controllers\PayController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache; // 引入缓存
+use Illuminate\Support\Facades\Cache;
 
 class PaypalPayController extends PayController
 {
@@ -51,12 +51,7 @@ class PaypalPayController extends PayController
      * @param float $amountCNY 人民币金额
      * @return float 美元金额
      */
-    //private function convertToUSD(float $amountCNY): float
-    //{
-    //    // 使用固定汇率（例如 0.15）或调用汇率 API
-    //   $rate = 0.137; // 默认汇率
-    //    return round($amountCNY * $rate, 2);
-    //}
+
     private function convertToUSD(float $amountCNY): float
     {
         // 默认兜底汇率 (1 CNY = 0.137 USD 约等于 1 USD = 7.3 CNY)
@@ -67,7 +62,6 @@ class PaypalPayController extends PayController
             $rate = Cache::remember('usd_cny_rate', 720, function () {
                 $url = "https://api.exchangerate-api.com/v4/latest/USD";    
                 
-                // --- 开始：原生 cURL 代码替换部分 ---
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -76,7 +70,6 @@ class PaypalPayController extends PayController
                 $response = curl_exec($ch);
                 $error = curl_error($ch);
                 curl_close($ch);
-                // --- 结束：原生 cURL 代码替换部分 ---
 
                 if (!$response) {
                     throw new \Exception('API 请求失败: ' . $error);
