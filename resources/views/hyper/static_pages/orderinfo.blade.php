@@ -14,7 +14,7 @@
         <div class="col-md-12">
             <h3>
                 <span class="badge badge-outline-primary">
-                    订单号：{{ $order['order_sn'] }}
+                    {{ __('hyper.searchOrder_order_number') }}: {{ $order['order_sn'] }}
                 </span>
             </h3>
         </div>
@@ -24,16 +24,16 @@
             <div class="orderinfo-info">
 				{{-- <div class="mb-1"><span style="color: red;">如果已付款，订单状态未支付，请刷新页面</span></div> --}}
                 {{-- 订单名称 --}}
-                <div class="mb-1"><label>{{ __('hyper.orderinfo_order_title') }}：</label><span>{{ $order['title'] }}</span></div>
+                <div class="mb-1"><label>{{ __('hyper.orderinfo_order_title') }}: </label><span>{{ $order['title'] }}</span></div>
                 {{-- 下单数量 --}}
-                <div class="mb-1"><label>{{ __('hyper.orderinfo_number_of_orders') }}：</label><span>{{ $order['buy_amount'] }}</span></div>
+                <div class="mb-1"><label>{{ __('hyper.orderinfo_number_of_orders') }}: </label><span>{{ $order['buy_amount'] }}</span></div>
                 {{-- 下单时间 --}}
-                <div class="mb-1"><label>{{ __('hyper.orderinfo_order_time') }}：</label><span>{{ $order['created_at'] }}</span></div>
+                <div class="mb-1"><label>{{ __('hyper.orderinfo_order_time') }}: </label><span>{{ $order['created_at'] }}</span></div>
                 {{-- 付款邮箱 --}}
-                <div class="mb-1"><label>{{ __('hyper.orderinfo_email') }}：</label><span>{{ $order['email'] }}</span></div>
+                <div class="mb-1"><label>{{ __('hyper.orderinfo_email') }}: </label><span>{{ $order['email'] }}</span></div>
                 <div class="mb-1">
                     {{-- 订单类型 --}}
-                    <label>{{ __('hyper.orderinfo_order_class') }}：</label>
+                    <label>{{ __('hyper.orderinfo_order_class') }}: </label>
                     <span>
                         @if($order['type'] == \App\Models\Order::AUTOMATIC_DELIVERY)
                             {{-- 自动发货 --}}
@@ -46,12 +46,12 @@
                 </div>
                 <div class="mb-1">
                     {{-- 订单总价 --}}
-                    <label>{{ __('hyper.orderinfo_total_order_price') }}：</label>
+                    <label>{{ __('hyper.orderinfo_total_order_price') }}: </label>
                     <span>{{ $order['actual_price'] }}</span>
                 </div>
                 <div class="mb-1">
                     {{-- 订单状态 --}}
-                    <label>{{ __('hyper.orderinfo_order_status') }}：</label>
+                    <label>{{ __('hyper.orderinfo_order_status') }}: </label>
                     <span>
                         @switch($order['status'])
                             @case(\App\Models\Order::STATUS_EXPIRED)
@@ -87,7 +87,7 @@
                 </div>
                 <div class="mb-1">
                     {{-- 支付方式 --}}
-                    <label>{{ __('hyper.orderinfo_payment_method') }}：</label>
+                    <label>{{ __('hyper.orderinfo_payment_method') }}: </label>
                     <span>{{ $order['pay']['pay_name'] ?? ''  }}</span>
                 </div>
             </div>
